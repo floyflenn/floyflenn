@@ -10,6 +10,7 @@ import tempfile
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 from scipy.optimize import linear_sum_assignment
+from scipy.ndimage import distance_transform_edt
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'assets/terminal/profile.svg'
@@ -70,11 +71,18 @@ def row(y,label,value):
     return f'<text x="447" y="{y}" fill="#8ca1b8">{label}</text><text x="850" y="{y}" text-anchor="end" fill="#e4effa">{value}</text>'
 
 def main():
-    shapes=[sample(m) for m in masks()]
+    source_masks = masks()
+    shapes = [sample(m) for m in source_masks]
+    # Thin only the avatar ink. Move existing samples to the nearest remaining ink;
+    # all four other target point sets are kept exactly as generated before.
+    thin = np.asarray(source_masks[0].filter(ImageFilter.MinFilter(3))) > 140
+    nearest = distance_transform_edt(~thin, return_distances=False, return_indices=True)
+    xy = np.rint(shapes[0]).astype(int).clip(0, S - 1)
+    shapes[0] = np.column_stack((nearest[1, xy[:, 1], xy[:, 0]], nearest[0, xy[:, 1], xy[:, 0]])).astype(float)
     aligned=[shapes[0]]
     for s in shapes[1:]: aligned.append(match(aligned[-1],s))
-    # Hold each for 2.16 s, then morph for 1.44 s. Final target is the first exact state.
-    times='0;.12;.20;.32;.40;.52;.60;.72;.80;.92;1'
+    # Hold each for 3 s, then morph for 1.44 s. Final target is the first exact state.
+    times='0;.135135;.2;.335135;.4;.535135;.6;.735135;.8;.935135;1'
     svg=['''<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550" role="img">
 <title>floyflenn | profile.sh --live</title><desc>Anonymous cybersecurity profile. Dots morph through an avatar, Python, terminal, shield and chip.</desc>
 <rect width="900" height="550" rx="12" fill="#0a101f"/><rect x="9" y="9" width="882" height="532" rx="10" fill="none" stroke="#284f65"/>
@@ -98,11 +106,11 @@ def main():
         color=('#a78bfa','#b9a4ff','#8e88eb','#c4b5fd')[i%4]
         pycolor = '#64b5e8' if aligned[1][i][1] < 120 else '#ffd76b'
         groups.setdefault((color, pycolor), []).append(
-            f'<circle cx="{xx[0]:.1f}" cy="{yy[0]:.1f}" r="0.95"><animate attributeName="cx" values="{x}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/><animate attributeName="cy" values="{y}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/></circle>')
+            f'<circle cx="{xx[0]:.1f}" cy="{yy[0]:.1f}" r="0.95"><animate attributeName="cx" values="{x}" keyTimes="{times}" dur="22.2s" repeatCount="indefinite"/><animate attributeName="cy" values="{y}" keyTimes="{times}" dur="22.2s" repeatCount="indefinite"/></circle>')
     # Animate inherited fill once per color group, rather than once per dot.
     for (color, pycolor), circles in groups.items():
         color_values = ';'.join([color,color,pycolor,pycolor,color,color,color,color,color,color,color])
-        svg.append(f'<g fill="{color}"><animate attributeName="fill" values="{color_values}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/>')
+        svg.append(f'<g fill="{color}"><animate attributeName="fill" values="{color_values}" keyTimes="{times}" dur="22.2s" repeatCount="indefinite"/>')
         svg.extend(circles)
         svg.append('</g>')
     svg.append('</g></svg>')
