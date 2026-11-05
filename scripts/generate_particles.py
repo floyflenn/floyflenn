@@ -14,7 +14,7 @@ from scipy.optimize import linear_sum_assignment
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'assets/terminal/profile.svg'
 S = 240
-N = 1500
+N = 1200
 rng = np.random.default_rng(824)
 PYTHON_PATH = ('M11.858 0c-.978.005-1.913.088-2.736.234C6.7.662 6.26 1.558 6.26 3.21v2.182h5.725v.727H4.111c-1.664 0-3.121 1-3.577 2.903-.526 2.181-.549 3.542 0 5.82.407 1.694 1.379 2.902 3.043 2.902h1.969v-2.616c0-1.89 1.635-3.557 3.576-3.557h5.72c1.591 0 2.862-1.31 2.862-2.91v-5.45c0-1.553-1.309-2.718-2.863-2.977A18 18 0 0 0 11.858 0M8.762 1.755c.591 0 1.074.491 1.074 1.095 0 .601-.483 1.087-1.074 1.087A1.08 1.08 0 0 1 7.688 2.85c0-.604.48-1.095 1.074-1.095m9.656 4.364v2.543c0 1.971-1.671 3.63-3.577 3.63H9.122c-1.566 0-2.862 1.34-2.862 2.91v5.452c0 1.551 1.349 2.464 2.862 2.91 1.813.532 3.55.628 5.72 0 1.44-.418 2.862-1.258 2.862-2.91V18.47h-5.719v-.727h8.582c1.664 0 2.284-1.16 2.862-2.903.598-1.793.573-3.518 0-5.819-.41-1.656-1.196-2.903-2.862-2.903zm-3.216 13.807a1.08 1.08 0 0 1 1.074 1.088c0 .604-.48 1.094-1.074 1.094-.592 0-1.075-.49-1.075-1.094 0-.601.483-1.088 1.075-1.088')
 
@@ -35,20 +35,20 @@ def masks():
         icon = Image.open(png).convert('RGBA').getchannel('A')
         python = blank(); python.paste(icon,(20,20))
     terminal = blank(); d=ImageDraw.Draw(terminal)
-    d.rounded_rectangle((19,37,221,203), radius=17, outline=255, width=12)
-    d.line([(52,89),(89,120),(52,151)], fill=255, width=13, joint='curve')
+    d.rounded_rectangle((19,37,221,203), radius=17, outline=255, width=7)
+    d.line([(52,89),(89,120),(52,151)], fill=255, width=8, joint='curve')
     d.rounded_rectangle((108,143,176,154), radius=5, fill=255)
     shield=blank(); d=ImageDraw.Draw(shield)
-    d.line([(120,17),(201,48),(197,132),(182,164),(154,190),(120,213),(86,190),(58,164),(43,132),(39,48),(120,17)], fill=255, width=12, joint='curve')
-    d.rounded_rectangle((85,100,155,159),radius=8,outline=255,width=10)
-    d.arc((95,62,145,119),180,360,fill=255,width=10)
+    d.line([(120,17),(201,48),(197,132),(182,164),(154,190),(120,213),(86,190),(58,164),(43,132),(39,48),(120,17)], fill=255, width=7, joint='curve')
+    d.rounded_rectangle((85,100,155,159),radius=8,outline=255,width=8)
+    d.arc((95,62,145,119),180,360,fill=255,width=8)
     d.ellipse((115,122,125,132), fill=255); d.rectangle((118,129,122,143), fill=255)
     chip=blank(); d=ImageDraw.Draw(chip)
-    d.rounded_rectangle((56,56,184,184),radius=16,outline=255,width=12)
-    d.rounded_rectangle((88,88,152,152),radius=9,outline=255,width=10)
+    d.rounded_rectangle((56,56,184,184),radius=16,outline=255,width=7)
+    d.rounded_rectangle((88,88,152,152),radius=9,outline=255,width=8)
     for i in [80,106,134,160]:
-        d.line((i,25,i,56),fill=255,width=9); d.line((i,184,i,215),fill=255,width=9)
-        d.line((25,i,56,i),fill=255,width=9); d.line((184,i,215,i),fill=255,width=9)
+        d.line((i,25,i,56),fill=255,width=7); d.line((i,184,i,215),fill=255,width=7)
+        d.line((25,i,56,i),fill=255,width=7); d.line((184,i,215,i),fill=255,width=7)
     return [avatar,python,terminal,shield,chip]
 
 def sample(mask):
@@ -73,7 +73,7 @@ def main():
     shapes=[sample(m) for m in masks()]
     aligned=[shapes[0]]
     for s in shapes[1:]: aligned.append(match(aligned[-1],s))
-    # Hold each for 3 s, then morph for 2 s. Final target is the first exact state.
+    # Hold each for 2.16 s, then morph for 1.44 s. Final target is the first exact state.
     times='0;.12;.20;.32;.40;.52;.60;.72;.80;.92;1'
     svg=['''<svg xmlns="http://www.w3.org/2000/svg" width="900" height="550" viewBox="0 0 900 550" role="img">
 <title>floyflenn | profile.sh --live</title><desc>Anonymous cybersecurity profile. Dots morph through an avatar, Python, terminal, shield and chip.</desc>
@@ -88,6 +88,7 @@ def main():
 <g font-size="14">''']
     for y,k,v in [(150,'IDENTITY','anonymous'),(182,'PRIMARY','cybersecurity'),(214,'SYSTEMS','Linux / networking'),(246,'CODE','Python / Bash'),(278,'PRACTICE','security labs / log analysis'),(310,'BUILD','scripting / automation'),(342,'EXPLORE','local AI / computer vision'),(374,'ALSO','robotics / control')]: svg.append(row(y,k,v))
     svg.append('''</g><path d="M435 400H849" stroke="#263d52"/><text x="435" y="430" fill="#68ddeb" font-size="13">$ cat focus.txt</text><text x="435" y="455" fill="#dce9f4" font-size="13">Curious about how systems work,</text><text x="435" y="477" fill="#dce9f4" font-size="13">how they fail, and how to improve them.</text><text x="435" y="501" fill="#6fcfae" font-size="12">&gt; keep exploring_</text></g><g>''')
+    groups = {}
     for i in range(N):
         vals=[p[i] for p in aligned]+[aligned[0][i]]
         # Panel coordinates: 240 units expanded to 285 units.
@@ -96,8 +97,14 @@ def main():
         y=';'.join(f'{q:.1f}' for v in yy[:-1] for q in (v,v))+f';{yy[-1]:.1f}'
         color=('#a78bfa','#b9a4ff','#8e88eb','#c4b5fd')[i%4]
         pycolor = '#64b5e8' if aligned[1][i][1] < 120 else '#ffd76b'
+        groups.setdefault((color, pycolor), []).append(
+            f'<circle cx="{xx[0]:.1f}" cy="{yy[0]:.1f}" r="0.95"><animate attributeName="cx" values="{x}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/><animate attributeName="cy" values="{y}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/></circle>')
+    # Animate inherited fill once per color group, rather than once per dot.
+    for (color, pycolor), circles in groups.items():
         color_values = ';'.join([color,color,pycolor,pycolor,color,color,color,color,color,color,color])
-        svg.append(f'<circle cx="{xx[0]:.1f}" cy="{yy[0]:.1f}" r="1.25" fill="{color}"><animate attributeName="fill" values="{color_values}" keyTimes="{times}" dur="25s" repeatCount="indefinite"/><animate attributeName="cx" values="{x}" keyTimes="{times}" dur="25s" repeatCount="indefinite"/><animate attributeName="cy" values="{y}" keyTimes="{times}" dur="25s" repeatCount="indefinite"/></circle>')
+        svg.append(f'<g fill="{color}"><animate attributeName="fill" values="{color_values}" keyTimes="{times}" dur="18s" repeatCount="indefinite"/>')
+        svg.extend(circles)
+        svg.append('</g>')
     svg.append('</g></svg>')
     OUT.write_text('\n'.join(svg),encoding='utf-8')
     # Static visual QA for each target, using the exact sampled coordinates.
@@ -107,7 +114,7 @@ def main():
         im=Image.new('RGB',(360,360),'#0c1525'); d=ImageDraw.Draw(im)
         for i,(x,y) in enumerate(pts):
             cx=38+x*1.19; cy=38+y*1.19
-            d.ellipse((cx-1.25,cy-1.25,cx+1.25,cy+1.25),fill=(('#64b5e8' if y < 120 else '#ffd76b') if j == 1 else ['#a78bfa','#b9a4ff','#8e88eb','#c4b5fd'][i%4]))
+            d.ellipse((cx-.95,cy-.95,cx+.95,cy+.95),fill=(('#64b5e8' if y < 120 else '#ffd76b') if j == 1 else ['#a78bfa','#b9a4ff','#8e88eb','#c4b5fd'][i%4]))
         im.save('/tmp/floy-scene-%d.png'%j)
     print(f'Wrote {OUT} ({OUT.stat().st_size} bytes)')
 if __name__=='__main__': main()
