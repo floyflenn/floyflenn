@@ -1,15 +1,10 @@
 # Profile assets
 
-- `avatar/original.png`: original anonymous illustration on white; used in terminal scenes.
-- `avatar/pixel.png`: matching 64-cell pixel illustration, exported at 1024 × 1024; ready for manual GitHub avatar upload.
-- `terminal/profile.gif`: desktop five-scene loop, 4.2 seconds per scene.
-- `terminal/profile-mobile.gif`: vertically arranged mobile version.
-- `terminal/*.png`: static and reduced-motion alternatives.
+- `avatar/original.png` is the original anonymous illustration.
+- `avatar/pixel.png` is the pixel rendition of the same illustration. The particle generator samples this file without modifying it.
+- `terminal/profile.svg` is the current README graphic. It uses declarative SVG animations to move the dots between five shapes in a 25-second loop. “Live” describes the visual, not account activity or live data.
+- `terminal/*.png` and `terminal/*.gif` are retained from earlier profile experiments; they are not required by the current README.
 
-The terminal is a rendered animation, not a running shell. “live” describes the visual loop, not online presence or live account data. All assets are served from this repository. There are no counters or remote widgets.
+To regenerate the SVG, install `scripts/requirements.txt`, install Inkscape, and run `python scripts/generate_particles.py` from the repository root. It also writes five target previews to the system temporary directory. The previous `scripts/render_profile.py` produces the earlier PNG/GIF experiments and is retained for reference; it is not the SVG generator and can overwrite `avatar/pixel.png` if run.
 
-To rebuild, install `scripts/requirements.txt`, then run `python scripts/render_profile.py`. Python 3.10+ is required. The script uses DejaVu Sans Mono, which must be installed or available to Pillow. The committed PNG/GIF files require no dependencies to display.
-
-The original illustration was AI-generated from this brief: an original minimalist black-ink anonymous seated abstract figure, hollow round head, thoughtful pose, generous white space, no face, text, logos, or identifying features. The pixel avatar is derived from the same original, rather than a separately generated character.
-
-Only the alias is used in profile content. Repository visibility and account-avatar changes are managed separately in GitHub settings.
+The Python icon silhouette in the generator is adapted from [Simple Icons](https://simpleicons.org/) (CC0-1.0). The original avatar and its pixel version remain available in `avatar/`.
