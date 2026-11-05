@@ -2,26 +2,27 @@
 
 ---
 
-### `01 / ABOUT`
+### `~/about`
 
-I'm **floyflenn** — curious about how systems work, how they fail, and how to make them better. This is my space for practical tools, security labs, and experiments.
+I'm **floyflenn**. I explore how systems work, investigate how they fail, and build tools to understand them better.
 
-### `02 / FOCUS`
+### `~/interests`
 
-| Area | Exploring |
-| :--- | :--- |
-| **Security & systems** | Cybersecurity, Linux, networking, labs, and log analysis |
-| **Code & automation** | Python, Bash, and useful scripts |
-| **Experiments** | Local AI, computer vision, robotics, and control |
+**`01` Security & systems**  
+Cybersecurity, Linux, networking, hands-on labs and log analysis.
 
-### `03 / TOOLBOX`
+**`02` Code & automation**  
+Python, Bash and practical scripts that turn ideas into useful tools.
+
+**`03` Experiments**  
+Local AI, computer vision, robotics and control.
+
+### `~/toolbox`
 
 `Python` · `Bash` · `Linux` · `Git` · `VS Code` · `RTDE`
 
-### `04 / EXPLORE`
-
-Take a look at my [repositories](https://github.com/floyflenn?tab=repositories).
-
 ---
 
-<sub>Built with curiosity. Shared as <strong>floyflenn</strong>.</sub>
+**[Explore my repositories ↗](https://github.com/floyflenn?tab=repositories)**
+
+<sub>Stay curious. Build what’s missing. — <strong>floyflenn</strong></sub>
